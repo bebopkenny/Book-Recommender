@@ -56,7 +56,7 @@ def retrieve_semantic_recommendations(
 def recommend_books(query: str, category: str, tone: str):
     recommendations = retrieve_semantic_recommendations(query, category, tone)
     results = []
-    for _, row in recommendation.iterrows():
+    for _, row in recommendations.iterrows():
         description = row["description"]
         truncated_desc_split = description.split()
         truncated_description = " ".join(truncated_desc_split[:30]) + "..."
@@ -65,5 +65,9 @@ def recommend_books(query: str, category: str, tone: str):
         if len(authors_split) == 2:
             authors_str = f"{authors_split[0]} and {authors_split[1]}"
         elif len(authors_split) > 2:
-             authors_str = f"{authors_split[0]}, {authors_split[1]} and {len(authors_split) - 2} others"
+             authors_str = f"{', '.join(authors_split[:-1])}, and {author_split[-1]}"
+        else:
+            author_str = row["authors"]
+            
+        caption = f"{row['title']} by {author}"
             
